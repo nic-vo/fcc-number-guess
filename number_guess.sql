@@ -27,7 +27,7 @@ SET default_table_access_method = heap;
 CREATE TABLE public.users (
     username character varying(22) NOT NULL,
     best_game integer NOT NULL,
-    num_games integer DEFAULT 0 NOT NULL
+    num_games integer DEFAULT 1 NOT NULL
 );
 
 
