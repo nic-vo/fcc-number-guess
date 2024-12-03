@@ -32,18 +32,17 @@ fi
 
 echo "Guess the secret number between 1 and 1000:"
 # generate random
-TARGET=$(($RANDOM % 1000))
+TARGET=$(($RANDOM % 1000 + 1))
 # init user guess, guess count
 GUESSES=0
-CURRENT_GUESS=$(($RANDOM % 1000))
+CURRENT_GUESS=$(($RANDOM % 1000 + 1))
 while [[ $TARGET = $CURRENT_GUESS ]]
 do
-  CURRENT_GUESS=$(($RANDOM % 1000))
+  CURRENT_GUESS=$(($RANDOM % 1000 + 1))
 done
 # while user guess !== random || user guess IS NOT int, update count
 while [[ $TARGET != $CURRENT_GUESS ]]
 do
-  echo Target: $TARGET
   read CURRENT_GUESS
   GUESSES=$(($GUESSES + 1))
   if [[ ! $CURRENT_GUESS =~ ^[0-9]+$ ]]
