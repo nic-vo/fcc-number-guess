@@ -25,7 +25,9 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.users (
-    username character varying(22) NOT NULL
+    username character varying(22) NOT NULL,
+    best_game integer NOT NULL,
+    num_games integer DEFAULT 0 NOT NULL
 );
 
 
@@ -35,7 +37,7 @@ ALTER TABLE public.users OWNER TO freecodecamp;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: freecodecamp
 --
 
-COPY public.users (username) FROM stdin;
+COPY public.users (username, best_game, num_games) FROM stdin;
 \.
 
 
