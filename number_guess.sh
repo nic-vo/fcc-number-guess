@@ -49,11 +49,49 @@ do
   CURRENT_GUESS=$(($RANDOM % 1000 + 1))
 done
 # while user guess !== random || user guess IS NOT int, update count
+while [[ $TARGET != $CURRENT_GUESS ]]
+do
+  echo Target: $TARGET
+  read CURRENT_GUESS
+  GUESSES=$(($GUESSES + 1))
+  if [[ ! $CURRENT_GUESS =~ ^[0-9]+$ ]]
+  then
+    NL_ECHO "That is not an integer, guess again:"
+    continue
+  fi
+  if [[ $CURRENT_GUESS -lt $TARGET ]]
+  then
+    NL_ECHO "It's higher than that, guess again:"
+  elif [[ $CURRENT_GUESS -gt $TARGET ]]
+  then
+    NL_ECHO "It's lower than that, guess again:"
+  fi
+done
+
+  echo $BEST_GAME, $NUM_GAMES, $USERNAME
 
 # when user guess === random
+if [[ -z $NUM_GAMES ]]
+then
+  NUM_GAMES=1
+else
+  NUM_GAMES=$(($NUM_GAMES + 1))
+fi
 
-# if no existing user, insert new data
+if [[ -z $BEST_GAME || $BEST_GAME > $GUESSES ]]
+then
+  BEST_GAME=$GUESSES
+fi
 
-# if user, update num_games and, if necessary, best_game
+if [[ $USER ]]
+then
+  # if user, update num_games and, if necessary, best_game
+  echo $BEST_GAME, $NUM_GAMES, $USERNAME
+  echo "$($PSQL "UPDATE users SET best_game=$BEST_GAME, num_games=$NUM_GAMES WHERE username='$USERNAME';")"
+else
+  # if no existing user, insert new data
+  echo "$($PSQL "INSERT INTO users(username,num_games,best_game) VALUES('$USERNAME', $NUM_GAMES, $BEST_GAME);")"
+fi
 
 # echo success message
+NL_ECHO "You guessed it in $GUESSES tries. The secret number was $TARGET. Nice job!"
