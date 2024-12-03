@@ -28,13 +28,14 @@ if [[ -z $USER ]]
 then
   # welcome message
   NL_ECHO "Welcome, $USERNAME! It looks like this is your first time here."
-  NL_ECHO "$($PSQL "INSERT INTO users(username) VALUES('$USERNAME');")"
 else
   # else display statistics
-  echo "$USER" | while IFS="|" read USERNAME NUM BEST
+  while IFS="|" read CURRENT_USERNAME NUM BEST
   do
+    NUM_GAMES=$NUM
+    BEST_GAME=$BEST
     NL_ECHO "Welcome back, $USERNAME! You have played $NUM games, and your best game took $BEST guesses."
-  done
+  done < <(echo "$USER")
 fi
 
 NL_ECHO "Guess the secret number between 1 and 1000:"
